@@ -23,14 +23,18 @@ main {
   gap: 10px;
 }
 
-.divPeso, .divAltura, .divgenero, .divCalcLimpa{
+.divPeso,
+.divAltura,
+.divgenero,
+.divCalcLimpa {
   width: 100%;
   display: flex;
   flex-direction: column;
   gap: 10px;
 }
 
-input, button {
+input,
+button {
   padding: 10px;
   font-size: 20px;
   outline: none;
@@ -43,15 +47,28 @@ button {
   background-color: #6f00ff;
   color: white;
 }
+
 @media (max-width: 500px) {
-  body, input, button {
+
+  body,
+  input,
+  button {
     font-size: 15px;
   }
 }
 
 #resultado {
-    display: flex;
-    justify-content: center; /* Centraliza horizontalmente */
-    align-items: center; /* Centraliza verticalmente, se necessário */
-    flex-direction: column; /* Empilha os itens verticalmente */
+  display: flex;
+  justify-content: center;
+  /* Centraliza horizontalmente */
+  align-items: center;
+  /* Centraliza verticalmente, se necessário */
+  flex-direction: column;
+  /* Empilha os itens verticalmente */
+}
+
+.erro {
+  color: red;
+  font-size: 14px;
+  margin-top: 5px;
 }
