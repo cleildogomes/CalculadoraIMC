@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -7,6 +8,7 @@
     <title>Calculadora de IMC</title>
     <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
     <main>
         <h2>Calculadora de IMC</h2>
@@ -20,7 +22,7 @@
             <label for="altura">Altura (cm):</label>
             <input type="number" id="altura" required>
         </div>
-        <div class="divGenero">      
+        <div class="divGenero">
             <label>Gênero:</label>
             <input type="radio" id="masculino" name="genero" value="Masculino" required>
             <label for="masculino">Masculino</label>
@@ -31,61 +33,102 @@
             <button type="button" onclick="calcularIMC()">Calcular IMC</button>
             <button type="button" onclick="limparFormulario()">Limpar</button>
         </div>
-   
-    <div id="resultado"></div>
-    <script>
-        function calcularIMC() {
-            var peso = document.getElementById('peso').value;
-            var altura = document.getElementById('altura').value / 100; // convertendo para metros
-            var generoSelecionado = document.querySelector('input[name="genero"]:checked');
-            var genero = generoSelecionado ? generoSelecionado.value : "";
 
-    if (!peso || !altura || !genero) {
-        document.getElementById('resultado').innerHTML = "<h3>Preencha todos os campos</h3>";
-        return; // Interrompe a execução da função aqui
-    }
+        <div id="resultado"></div>
+        <p id="alerta" style="color: red; display: none;">Preencha todos os campos obrigatórios.</p>
+        <script>
+            function calcularIMC() {
+                var peso = document.getElementById('peso').value;
+                var altura = document.getElementById('altura').value / 100; // convertendo para metros
+                var generoSelecionado = document.querySelector('input[name="genero"]:checked');
+                var genero = generoSelecionado ? generoSelecionado.value : "";
 
-    var imc = (peso / (altura * altura));
+                // Limpar mensagens de erro anteriores
+                var camposErro = document.querySelectorAll('.erro');
+                camposErro.forEach(function (campo) {
+                    campo.remove();
+                });
 
-    var descricao = "";
+                var formValido = true;
 
-    if (genero === "Masculino") {
-        if (imc < 20.7) descricao = "Abaixo do peso";
-        else if (imc <= 26.4) descricao = "Peso normal";
-        else if (imc <= 27.8) descricao = "Marginalmente acima do peso";
-        else if (imc <= 31.1) descricao = "Acima do peso ideal";
-        else if (imc <= 34.9) descricao = "Obesidade Grau 1";
-        else if (imc <= 39.9) descricao = "Obesidade Grau 2";
-        else if (imc <= 49.9) descricao = "Obesidade Grau 3";
-        else descricao = "Obesidade Grau 4";
-    } else { // Feminino
-        if (imc < 19.1) descricao = "Abaixo do peso";
-        else if (imc <= 25.8) descricao = "Peso normal";
-        else if (imc <= 27.3) descricao = "Marginalmente acima do peso";
-        else if (imc <= 32.3) descricao = "Acima do peso ideal";
-        else if (imc <= 34.9) descricao = "Obesidade Grau 1";
-        else if (imc <= 39.9) descricao = "Obesidade Grau 2";
-        else if (imc <= 49.9) descricao = "Obesidade Grau 3";
-        else descricao = "Obesidade Grau 4";
-    }
+                // Verificar se o peso está preenchido
+                if (!peso) {
+                    exibirErro('peso', 'Preencha o campo de peso');
+                    formValido = false;
+                }
 
-    var resultado = `
-        <span><p><h3>IMC: ${imc.toFixed(2)}</h3></p></spam>
-        <span><p><h3>Grau: ${descricao}</h3></p></spam>
-    `;
+                // Verificar se a altura está preenchida
+                if (!altura) {
+                    exibirErro('altura', 'Preencha o campo de altura');
+                    formValido = false;
+                }
 
-    document.getElementById('resultado').innerHTML = resultado;
-}
+                // Verificar se o gênero está selecionado
+                if (!genero) {
+                    exibirErro('genero', 'Selecione o gênero');
+                    formValido = false;
+                }
 
-        function limparFormulario() {
+                if (!formValido) {
+                    return; // Interrompe a execução da função se o formulário não é válido
+                }
+
+                var imc = (peso / (altura * altura));
+
+                var descricao = "";
+
+                if (genero === "Masculino") {
+                    if (imc < 20.7) descricao = "Abaixo do peso";
+                    else if (imc <= 26.4) descricao = "Peso normal";
+                    else if (imc <= 27.8) descricao = "Marginalmente acima do peso";
+                    else if (imc <= 31.1) descricao = "Acima do peso ideal";
+                    else if (imc <= 34.9) descricao = "Obesidade Grau 1";
+                    else if (imc <= 39.9) descricao = "Obesidade Grau 2";
+                    else if (imc <= 49.9) descricao = "Obesidade Grau 3";
+                    else descricao = "Obesidade Grau 4";
+                } else { // Feminino
+                    if (imc < 19.1) descricao = "Abaixo do peso";
+                    else if (imc <= 25.8) descricao = "Peso normal";
+                    else if (imc <= 27.3) descricao = "Marginalmente acima do peso";
+                    else if (imc <= 32.3) descricao = "Acima do peso ideal";
+                    else if (imc <= 34.9) descricao = "Obesidade Grau 1";
+                    else if (imc <= 39.9) descricao = "Obesidade Grau 2";
+                    else if (imc <= 49.9) descricao = "Obesidade Grau 3";
+                    else descricao = "Obesidade Grau 4";
+                }
+
+                var resultado = `
+            <span><p><h3>IMC: ${imc.toFixed(2)}</h3></p></spam>
+            <span><p><h3>Grau: ${descricao}</h3></p></spam>
+        `;
+
+                document.getElementById('resultado').innerHTML = resultado;
+            }
+
+            function exibirErro(idCampo, mensagem) {
+                var campo = document.getElementById(idCampo);
+                var mensagemErro = document.createElement('div');
+                mensagemErro.textContent = mensagem;
+                mensagemErro.classList.add('erro');
+                campo.insertAdjacentElement('afterend', mensagemErro);
+            }
+
+            function limparFormulario() {
                 document.getElementById('peso').value = ''; // Limpa o campo de peso
                 document.getElementById('altura').value = ''; // Limpa o campo de altura
                 document.getElementById('masculino').checked = false; // Desmarca o radio de masculino
                 document.getElementById('feminino').checked = false; // Desmarca o radio de feminino
                 document.getElementById('resultado').innerHTML = ""; // Limpa a área de resultado
-}
 
-    </script>
-</main>
+                // Adicionado: Remover mensagens de erro
+                var mensagensErro = document.querySelectorAll('.erro');
+                mensagensErro.forEach(function (mensagem) {
+                    mensagem.remove();
+                });
+            }
+
+        </script>
+    </main>
 </body>
+
 </html>
